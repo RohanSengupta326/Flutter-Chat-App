@@ -1,6 +1,5 @@
 import 'package:chat_app/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
-
 import './screens/auth_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,12 +14,15 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = ThemeData();
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         iconTheme: const IconThemeData(color: Colors.white),
+      ).copyWith(
+        colorScheme: theme.colorScheme.copyWith(secondary: Colors.blueAccent),
       ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),

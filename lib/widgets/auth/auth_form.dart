@@ -1,3 +1,4 @@
+import 'package:chat_app/widgets/upload_picked_image.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
@@ -54,6 +55,7 @@ class _AuthFormState extends State<AuthForm> {
                 mainAxisSize: MainAxisSize.min,
                 //dont take as much space as possible but as minimum as needed
                 children: <Widget>[
+                  if (!_isLogIn) UploadImage(),
                   TextFormField(
                     validator: (value) {
                       if (value!.isEmpty || !value.contains('@')) {
