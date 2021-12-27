@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import '../widgets/auth/auth_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -19,6 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
     String email,
     String username,
     String password,
+    XFile? image,
     bool isLogIn,
     BuildContext ctx,
   ) async {
@@ -39,7 +43,23 @@ class _AuthScreenState extends State<AuthScreen> {
           password: password,
         );
       }
-      FirebaseFirestore.instance
+
+      final refPath = FirebaseStorage.instance
+          .ref()
+          .child('user_image')
+          .child(userCredential.user!.uid + '.jpg');
+      // ref points to the bucket in firebase which stores the images, child is the folder name, if not there it creates it,
+      // then in that folder another child stores the .jpg file with the name of the image as the user id
+
+      await refPath.putFile(
+        // storing the image in the bucket in firebase storage
+        File(image!.path),
+      );
+
+      final dpUrl = await refPath.getDownloadURL();
+      // gets the image url
+
+      await FirebaseFirestore.instance
           .collection('users')
           // creating new collection with messages in firebase
           .doc(userCredential.user!.uid)
@@ -49,6 +69,8 @@ class _AuthScreenState extends State<AuthScreen> {
           // saving some extra data in the firebase
           'username': username,
           'email': email,
+          'dpUrl': dpUrl,
+          // storing the dp so that later to access it we can just use the url but not the whole process of getting url again
         },
       );
 

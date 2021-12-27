@@ -1,6 +1,8 @@
 import 'package:chat_app/widgets/upload_picked_image.dart';
 import 'package:flutter/material.dart';
 
+import 'package:image_picker/image_picker.dart';
+
 class AuthForm extends StatefulWidget {
   AuthForm(this.submitFn, this.isLoading);
 
@@ -9,6 +11,7 @@ class AuthForm extends StatefulWidget {
     String email,
     String username,
     String passoword,
+    XFile? userImageFile,
     bool isLogIn,
     BuildContext ctx,
   ) submitFn;
@@ -23,11 +26,29 @@ class _AuthFormState extends State<AuthForm> {
   String _userName = '';
   String _userPassword = '';
   var _isLogIn = false;
+  XFile? _pickedImage;
 
   void onSubmitted() {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
     // unfocuses from any text field
+
+    if (_pickedImage == null && !_isLogIn) {
+      Scaffold.of(context).removeCurrentSnackBar();
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+            'Please upload an Image',
+          ),
+          duration: const Duration(
+            seconds: 3,
+          ),
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
+      return;
+    }
+
     if (isValid) {
       _formKey.currentState!.save();
       widget.submitFn(
@@ -35,10 +56,15 @@ class _AuthFormState extends State<AuthForm> {
         // trim() ignores the blank spaces
         _userName.trim(),
         _userPassword.trim(),
+        _pickedImage,
         _isLogIn,
         context,
       );
     }
+  }
+
+  void imagePicker(XFile? image) {
+    _pickedImage = image;
   }
 
   @override
@@ -55,7 +81,7 @@ class _AuthFormState extends State<AuthForm> {
                 mainAxisSize: MainAxisSize.min,
                 //dont take as much space as possible but as minimum as needed
                 children: <Widget>[
-                  if (!_isLogIn) UploadImage(),
+                  if (!_isLogIn) UploadImage(imagePicker),
                   TextFormField(
                     validator: (value) {
                       if (value!.isEmpty || !value.contains('@')) {

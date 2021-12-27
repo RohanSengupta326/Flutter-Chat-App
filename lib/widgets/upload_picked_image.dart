@@ -3,7 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class UploadImage extends StatefulWidget {
-  const UploadImage({Key? key}) : super(key: key);
+  final void Function(XFile? image) imagePicker;
+  UploadImage(this.imagePicker);
 
   @override
   _UploadImageState createState() => _UploadImageState();
@@ -14,12 +15,17 @@ class _UploadImageState extends State<UploadImage> {
   void uplaodImage() async {
     final ImagePicker _picker = ImagePicker();
 
-    final XFile? dp = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? dp = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+      maxWidth: 150,
+    );
     setState(
       () {
         _pickedImage = dp;
       },
     );
+    widget.imagePicker(_pickedImage);
   }
 
   @override
@@ -29,7 +35,9 @@ class _UploadImageState extends State<UploadImage> {
         CircleAvatar(
           radius: 50,
           backgroundImage: _pickedImage != null
-              ? FileImage(_pickedImage as File)
+              ? FileImage(
+                  File(_pickedImage!.path),
+                )
               : const AssetImage('assets/images/userdp.png')
                   as ImageProvider<Object>?,
         ),

@@ -30,6 +30,7 @@ class Messages extends StatelessWidget {
             chatDoc[index]['text'],
             chatDoc[index]['userId'] == userIdInfo!.uid ? true : false,
             chatDoc[index]['username'],
+            chatDoc[index]['dpUrl'],
             key: ValueKey(chatDoc[index].id),
             // unique key with the document Id in firebase 
           ),

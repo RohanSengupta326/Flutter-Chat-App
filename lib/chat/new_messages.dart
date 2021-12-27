@@ -30,6 +30,8 @@ class _NewMessagesState extends State<NewMessages> {
         // also storing the userId
         'username': userData['username'],
         // also storing the username
+        'dpUrl': userData['dpUrl'],
+        // also adding the dpurl to chat collection
       },
     );
     _controller.clear();
