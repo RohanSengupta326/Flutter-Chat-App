@@ -36,15 +36,17 @@ class _UploadImageState extends State<UploadImage> {
           radius: 50,
           backgroundImage: _pickedImage != null
               ? FileImage(
+                // image provider type : File
                   File(_pickedImage!.path),
                 )
               : const AssetImage('assets/images/userdp.png')
+              // image provider type : Asset
                   as ImageProvider<Object>?,
         ),
         TextButton.icon(
           onPressed: uplaodImage,
-          icon: Icon(Icons.image),
-          label: Text('Upload profile picture'),
+          icon: const Icon(Icons.image),
+          label: const Text('Upload profile picture'),
         ),
       ],
     );

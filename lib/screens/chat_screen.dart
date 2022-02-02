@@ -51,7 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           children: const [
             Expanded(
-              // listview.builder in column doesnt work so expanded tells listview.builder to contain itself inside the
+              // listview.builder in column doesnt work so Expanded tells listview.builder to contain itself inside the
               // column but scrollable
               child: Messages(),
             ),

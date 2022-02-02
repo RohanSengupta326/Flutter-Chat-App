@@ -24,7 +24,7 @@ class _AuthScreenState extends State<AuthScreen> {
     String password,
     XFile? image,
     bool isLogIn,
-    BuildContext ctx,
+    BuildContext importedCtx,
   ) async {
     // use firebase sdk to login/sigup a user not http module
     UserCredential userCredential;
@@ -48,7 +48,8 @@ class _AuthScreenState extends State<AuthScreen> {
           .ref()
           .child('user_image')
           .child(userCredential.user!.uid + '.jpg');
-      // ref points to the bucket in firebase which stores the images, child is the folder name, if not there it creates it,
+      // ref points to the bucket in firebase which stores the images, child is the folder name, if not there it creates
+      // it in storage section of firebase,
       // then in that folder another child stores the .jpg file with the name of the image as the user id
 
       await refPath.putFile(
@@ -82,16 +83,18 @@ class _AuthScreenState extends State<AuthScreen> {
       if (err.message != null) {
         message = err.message as String;
       }
-      Scaffold.of(ctx).showSnackBar(
+      Scaffold.of(importedCtx).showSnackBar(
         // but this context should come from where we are showing the snackbar which is not in this file, so importing
         // with constructor
         SnackBar(
           content: Text(message),
         ),
       );
-      setState(() {
-        _isLoading = false;
-      });
+      setState(
+        () {
+          _isLoading = false;
+        },
+      );
     } catch (error) {
       print(error);
       setState(() {

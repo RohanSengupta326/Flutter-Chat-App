@@ -24,15 +24,15 @@ class MessageBubble extends StatelessWidget {
                     ? Theme.of(context).colorScheme.secondary
                     : Colors.deepPurpleAccent,
                 borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(12),
-                  topLeft: Radius.circular(12),
-                  bottomLeft: !isMe ? Radius.circular(0) : Radius.circular(12),
-                  bottomRight: isMe ? Radius.circular(0) : Radius.circular(12),
+                  topRight: const Radius.circular(12),
+                  topLeft: const Radius.circular(12),
+                  bottomLeft: !isMe ? const Radius.circular(0) : const Radius.circular(12),
+                  bottomRight: isMe ? const Radius.circular(0) : const Radius.circular(12),
                 ),
               ),
               width: 140,
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 5),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
               child: Column(
                 crossAxisAlignment:
                     isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -47,7 +47,9 @@ class MessageBubble extends StatelessWidget {
                     chatText,
                     style: const TextStyle(
                       color: Colors.white,
+                      
                     ),
+                    textAlign: TextAlign.end,
                   ),
                 ],
               ),

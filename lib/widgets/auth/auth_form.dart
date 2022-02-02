@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AuthForm extends StatefulWidget {
-  AuthForm(this.submitFn, this.isLoading);
-
   final bool isLoading;
   final void Function(
     String email,
@@ -16,12 +14,15 @@ class AuthForm extends StatefulWidget {
     BuildContext ctx,
   ) submitFn;
 
+  AuthForm(this.submitFn, this.isLoading);
+
   @override
   _AuthFormState createState() => _AuthFormState();
 }
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
+  // to access the filled up from outside build function
   String _userEmail = '';
   String _userName = '';
   String _userPassword = '';
@@ -38,7 +39,7 @@ class _AuthFormState extends State<AuthForm> {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: const Text(
-            'Please upload an Image',
+            'Please upload your Profile Picture',
           ),
           duration: const Duration(
             seconds: 3,
@@ -77,6 +78,7 @@ class _AuthFormState extends State<AuthForm> {
             padding: const EdgeInsets.all(16),
             child: Form(
               key: _formKey,
+              // to access the filled up from outside build function
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 //dont take as much space as possible but as minimum as needed
@@ -126,7 +128,7 @@ class _AuthFormState extends State<AuthForm> {
                       labelText: 'Password',
                     ),
                     obscureText: true,
-                    // hidden
+                    // hidden(*****)
                     onSaved: (value) {
                       _userPassword = value as String;
                     },
